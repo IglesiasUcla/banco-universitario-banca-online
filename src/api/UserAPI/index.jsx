@@ -42,8 +42,7 @@ class UserAPI {
    * @param {TUserPassword} values 
    */
   async changePassword(values) {
-    const response = await http.patch(`${this.BASE}/password`, values);
-    return response;
+    return await http.patch(`${this.BASE}/password`, values);
   };
 
 };

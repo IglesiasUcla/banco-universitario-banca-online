@@ -23,7 +23,6 @@ class AuthAPI {
     const response = await http.post(`${this.BASE}/register`, values);
     return response;
   }
-
 };
 
 export default AuthAPI;

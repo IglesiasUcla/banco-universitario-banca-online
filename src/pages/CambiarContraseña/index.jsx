@@ -1,11 +1,13 @@
 import React from "react";
+import UpdatePasswordForm from "../../components/UpdatePasswordComponents/UpdatePasswordForm";
 import Layout from "../../components/Layout";
-
 
 const CambiarContraseñaPage = () => {
   return (
     <div>
-      <Layout />
+      <Layout>
+      <UpdatePasswordForm />
+      </Layout>
     </div>
   );
 };
