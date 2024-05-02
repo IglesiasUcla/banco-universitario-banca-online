@@ -8,9 +8,8 @@ const Layout = ({ children }) => {
       <div className="absolute inset-y-0 left-0">
         <SideBar />
       </div>
-      <div className="flex flex-col flex-1 ml-80">
+      <div className="flex flex-col flex-1 ml-20 sm:ml-20 lg:ml-80">
         <TopBar />
-
         {children}
       </div>
     </div>
