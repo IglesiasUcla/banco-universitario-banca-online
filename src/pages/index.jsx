@@ -2,9 +2,13 @@ import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./Home";
 import TransferenciasPage from "./Transferencias";
 import LoginPage from "./LogIn";
-import SignupPage from "./SignUp";
+import SignUpPage from "./SignUp";
 import MiCuentaPage from "./MiCuenta";
-import DirectorioPage from "./Directorio";
+
+import ContactsPage from "./Contacts";
+import ContactsCreatePage from "./Contacts/Create";
+import ContactsEditPage from "./Contacts/Edit";
+
 import CambiarContraseñaPage from "./CambiarContraseña";
 
 const router = createBrowserRouter([
@@ -14,7 +18,7 @@ const router = createBrowserRouter([
     },
     {
       path: "/sign-up",
-      element: <SignupPage />
+      element: <SignUpPage />
     },
     {
       path: "/dashboard",
@@ -29,8 +33,16 @@ const router = createBrowserRouter([
       element: <MiCuentaPage />,
     },
     {
-      path: "/directorio",
-      element: <DirectorioPage />,
+      path: "/contacts",
+      element: <ContactsPage />
+    },
+    {
+      path: "/contacts/create",
+      element: <ContactsCreatePage />,
+    },
+    {
+      path: "/contacts/:id/edit",
+      element: <ContactsEditPage />,
     },
     {
       path: "/cambiar-contraseña",

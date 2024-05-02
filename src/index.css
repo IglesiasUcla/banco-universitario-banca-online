@@ -72,3 +72,13 @@ h6 {
 .react-datepicker__calendar-icon {
   filter: invert(90%) sepia(10%) saturate(0%) hue-rotate(0deg) brightness(85%) contrast(100%);
 }
+
+.tooltip{
+  visibility: hidden;
+  position: absolute;
+}
+
+.has-tooltip:hover .tooltip {
+  visibility: visible;
+  z-index: 100;
+}

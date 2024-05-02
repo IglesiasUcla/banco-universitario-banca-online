@@ -156,18 +156,18 @@ const LoginForm = () => {
             )}
           />
 
-          <div className="flex items-center flex-1 justify-end space-x-4">
+          <div className="flex items-center flex-1 justify-end space-x-4">            
+            <StyledButton
+              onClick={handleToRegister}
+              label="Registrarse"
+              className="bg-[#e6f1fe] border-[#e6f1fe] text-[#49beb7] hover:text-[#49beb7] hover:bg-[#cee2fa]"
+            />
+
             <StyledButton
               type="submit"
               label="Ingresar"
               disabled={isLoading}
               className={isLoading ? "bg-[#cccccc] border-[#cccccc] hover:text-[#4e4e4e] text-[#4e4e4e]" : "bg-[#49beb7] border-[#49beb7] text-white hover:bg-[#24837c]"}
-            />
-            
-            <StyledButton
-              onClick={handleToRegister}
-              label="Registrarse"
-              className="bg-[#e6f1fe] border-[#e6f1fe] text-[#49beb7] hover:text-[#49beb7] hover:bg-[#cee2fa]"
             />
           </div>
         </form>

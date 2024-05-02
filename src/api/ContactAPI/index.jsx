@@ -8,6 +8,20 @@ import { PRIVATE, http } from "../http";
  */
 
 /**
+ * @typedef {Object} TContactArrayResponse
+ * @property {TContact[]} data
+ * @property {Object[]} errors
+ * @property {String} message
+ */
+
+/**
+ * @typedef {Object} TContactResponse
+ * @property {TContact} data
+ * @property {Object[]} errors
+ * @property {String} message
+ */
+
+/**
  * Contact API Service.
  */
 class ContactAPI {
@@ -23,15 +37,21 @@ class ContactAPI {
 
   /**
    * @param {string} ID 
+   * @returns {Promise<TContactResponse>}
    */
   async get(ID) {
-    const response = await http.get(`${this.BASE}/${ID}`);
-    return response;
+    const { data } = await http.get(`${this.BASE}/${ID}`);
+    return data;
   };
 
+  /**
+   * 
+   * @param {String} alias 
+   * @returns {Promise<TContactArrayResponse}
+   */
   async getAll(alias = "") {
-    const response = await http.get(`${this.BASE}?alias=${alias}`);
-    return response;
+    const { data } = await http.get(`${this.BASE}?alias=${alias}`);
+    return data;
   };
 
   /**
@@ -51,13 +71,13 @@ class ContactAPI {
     return response;
   };
 
-    /**
-   * @param {string} ID
-   */
-    async delete(ID) {
-      const response = await http.delete(`${this.BASE}/${ID}`);
-      return response;
-    };
+  /**
+ * @param {string} ID
+ */
+  async delete(ID) {
+    const response = await http.delete(`${this.BASE}/${ID}`);
+    return response;
+  };
 
 };
 
