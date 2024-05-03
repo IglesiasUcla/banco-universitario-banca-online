@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
-import { updatePasswordSchema } from "../../schemas/updatePasswordSchema"; // Asumiendo que defines el esquema de validación aquí
+import { updatePasswordSchema } from "../../schemas/updatePasswordSchema"; 
 import StyledInput from "../StyledInput";
 import StyledButton from "../StyledButton";
 import Panel from "../Panel";
@@ -36,7 +35,7 @@ const UpdatePasswordForm = () => {
     try {
       await dispatch(changePassword(values));
       showSuccessToast("Contraseña actualizada con éxito");
-      reset(); // Reinicia los valores del formulario
+      reset(); 
     } catch (error) {
       showErrorToast(`Error al actualizar la contraseña: ${error}`);
       console.error("Error al actualizar la contraseña:", error);
