@@ -118,7 +118,7 @@ const CreateContactForm = () => {
               <StyledInput
                 ref={ref}
                 id="accountNumber"
-                placeholder="Ingrese el número de documento"
+                placeholder="Ingrese el número de cuenta"
                 error={Boolean(errors.documentNumber)}
                 helperText={errors.documentNumber?.message}
                 value={value}
