@@ -63,6 +63,19 @@ export const changePassword = createAsyncThunk(
   }
 );
 
+export const getBalance = createAsyncThunk(
+  "user/getBalance",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await userAPI.getBalance();
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -113,6 +126,21 @@ export const userSlice = createSlice({
         state.loading = false;
         state.errorMessage = action.payload;
       });
+
+    builder
+      .addCase(getBalance.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = "";
+      })
+      .addCase(getBalance.fulfilled, (state, action) => {
+        state.loading = false;
+        state.balance = action.payload;
+      })
+        .addCase(getBalance.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+      });
+
   },
 });
 
