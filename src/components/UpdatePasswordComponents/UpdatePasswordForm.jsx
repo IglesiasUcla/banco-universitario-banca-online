@@ -34,13 +34,17 @@ const UpdatePasswordForm = () => {
       const response = await userAPI.updatePassword(values);
       console.log("Respuesta del servidor:", response);
       
-      // Si la respuesta es exitosa, mostrar la tostada de éxito
+      if (!response || response.errors.length > 0) {
+        const message = response?.message ?? "No es posible actualizar la contraseña en este momento.";
+        showErrorToast(message);
+        return;
+      }
+  
       showSuccessToast("Contraseña actualizada con éxito");
       reset();
     } catch (error) {
       console.error("Error en la solicitud de actualización de contraseña:", error);
       if (error.response && error.response.status === 401) {
-        // Si la contraseña actual es incorrecta, mostrar la tostada de error
         showErrorToast("La contraseña actual no es correcta");
       } else {
         showErrorToast(`Error al actualizar la contraseña: ${error.message}`);
