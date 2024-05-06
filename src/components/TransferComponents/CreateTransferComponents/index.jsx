@@ -1,19 +1,22 @@
-import { useRef } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { transferSchema } from "../../../schemas/transferSchema"; // Asegúrate de tener un esquema de validación para la transferencia
 import useLoading from "../../../hooks/useLoading";
 import useToast from "../../../hooks/useToast";
+import { newMovementAdapter } from "../../../adapters/Movement.Adapter"; // Importamos el adaptador
+import MovementAPI from "../../../api/MovementAPI"; // Importamos la API de Movimientos
 import StyledInput from "../../StyledInput";
 import StyledButton from "../../StyledButton";
-import { Link } from "react-router-dom";
+import StyledArea from "../../StyledArea";
+import { transferSchema } from "../../../schemas/transferSchema"; // Importamos el esquema de validación
 
 const CreateTransferForm = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { showSuccessToast, showErrorToast } = useToast();
-  const ref = useRef();
   const navigate = useNavigate();
+  const movementAPI = new MovementAPI(); // Instanciamos la API de Movimientos
+
   const {
     control,
     handleSubmit,
@@ -21,47 +24,56 @@ const CreateTransferForm = () => {
     reset
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(transferSchema),
-    defaultValues: {} // No se necesitan valores por defecto para una nueva transferencia
+    resolver: yupResolver(transferSchema), // Usamos el esquema de validación
+    defaultValues: { amount: "", accountNumber: "", description: "" } // Valores por defecto
   });
 
-  const handleBack = () => navigate("/contacts");
+  const handleBack = () => navigate("/transferencias"); // Manejador para volver atrás
 
   const onSubmit = async (values) => {
     startLoading();
     try {
-      // Lógica para realizar la transferencia
-      // Puedes enviar los valores a través de una API o realizar cualquier otra acción necesaria
-      // Por ejemplo:
-      // await transferAPI.create(values);
-      // showSuccessToast("Transferencia realizada con éxito.");
-      // handleBack();
+      // Adaptamos los valores de la transferencia antes de enviarlos a la API
+      const adaptedValues = newMovementAdapter(values);
+      const { data } = await movementAPI.transfer(adaptedValues); // Llamamos a la función transfer del API de Movimientos
+
+      // Manejo de respuestas
+      if (!data?.data || data?.errors.length > 0) {
+        const message = data?.message ?? "No es posible realizar la transferencia en este momento.";
+        showErrorToast(message);
+        return;
+      }
+
+      const message = "Transferencia realizada con éxito.";
+      showSuccessToast(message);
+      reset(); // Reseteamos el formulario después de una transferencia exitosa
+      handleBack(); // Volvemos atrás
     } catch (error) {
       showErrorToast(`Error al realizar la transferencia: ${error}`);
       console.error("Error al realizar la transferencia:", error);
     } finally {
       stopLoading();
     }
-  };
+  }
 
   return (
     <div className="box-content rounded bg-white w-[60%] h-auto my-5 flex flex-col p-5 justify-start space-y-3">
       <div className="flex flex-row justify-between w-auto items-center pb-5">
         <h2 className="text-lg">Realizar transferencia</h2>
       </div>
+
       <form onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="grid gap-4 gap-y-8 lg:mb-12 mb-8">
           <Controller
-            name="name"
+            name="amount"
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value, ...field } }) => (
               <StyledInput
-                ref={ref}
-                id="name"
-                placeholder="Nombre"
-                error={Boolean(errors.name)}
-                helperText={errors.name?.message}
+                id="amount"
+                placeholder="Cantidad"
+                error={Boolean(errors.amount)}
+                helperText={errors.amount?.message}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -77,7 +89,6 @@ const CreateTransferForm = () => {
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value, ...field } }) => (
               <StyledInput
-                ref={ref}
                 id="accountNumber"
                 placeholder="Número de cuenta"
                 error={Boolean(errors.accountNumber)}
@@ -92,16 +103,15 @@ const CreateTransferForm = () => {
         </div>
         <div className="grid gap-4 gap-y-8 lg:mb-12 mb-8">
           <Controller
-            name="idNumber"
+            name="description"
             control={control}
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value, ...field } }) => (
-              <StyledInput
-                ref={ref}
-                id="idNumber"
-                placeholder="Documento de identidad"
-                error={Boolean(errors.idNumber)}
-                helperText={errors.idNumber?.message}
+              <StyledArea
+                id="description"
+                placeholder="Descripción"
+                error={Boolean(errors.description)}
+                helperText={errors.description?.message}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
@@ -110,37 +120,14 @@ const CreateTransferForm = () => {
             )}
           />
         </div>
-        <div className="grid gap-4 gap-y-8 lg:mb-12 mb-8">
-          <Controller
-            name="amount"
-            control={control}
-            rules={{ required: true }}
-            render={({ field: { onChange, onBlur, value, ...field } }) => (
-              <StyledInput
-                ref={ref}
-                id="amount"
-                placeholder="Cantidad"
-                type="number"
-                error={Boolean(errors.amount)}
-                helperText={errors.amount?.message}
-                value={value}
-                onChange={onChange}
-                onBlur={onBlur}
-                {...field}
-              />
-            )}
-          />
-        </div>
+
         <div className="flex items-center flex-1 justify-end space-x-4">
-        <Link
-          to="/contacts"
-        >
           <StyledButton
             onClick={handleBack}
-            label="Directorio"
+            label="Volver"
             className="bg-[#e6f1fe] border-[#e6f1fe] text-[#49beb7] hover:text-[#49beb7] hover:bg-[#cee2fa]"
           />
-          </Link>
+
           <StyledButton
             type="submit"
             label="Transferir"
