@@ -23,26 +23,18 @@ import StyledInput from "../StyledInput";
 import StyledButton from "../StyledButton"
 
 const LoginForm = () => {
-
   const ref = useRef();
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { showSuccessToast, showErrorToast } = useToast();
-
   const [showPassword, setShowPassword] = useState(false);
-
-  const navigate = useNavigate();
-
   const isLogged = useSelector(selectIsLogged);
-  
   const userErrorMessage = useSelector(selectUserErrorMessage);
-
-  const dispatch = useDispatch();
 
   const {
     control,
     handleSubmit,
-
     formState: { errors },
     reset
   } = useForm({
@@ -52,7 +44,6 @@ const LoginForm = () => {
   });
 
   const handleToRegister = () => navigate("/sign-up");
-
   const handleShowPassword = () => setShowPassword(value => !value);
 
   const onSubmit = async (values) => {
@@ -65,7 +56,15 @@ const LoginForm = () => {
     } finally {
       stopLoading();
     }
-  }
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      event.stopPropagation();
+      handleSubmit(onSubmit)();
+    }
+  };
 
   useEffect(() => {
     if (isLogged) {
@@ -91,9 +90,7 @@ const LoginForm = () => {
         </div>
       </header>
       <Panel className="w-80 h-64" title="¡Bienvenido, a Banco Universitario!" >
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-        >
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Controller
             name="email"
             control={control}
@@ -124,16 +121,14 @@ const LoginForm = () => {
                 id="password"
                 placeholder="Ingrese su contraseña"
                 type={showPassword ? "text" : "password"}
-
                 error={Boolean(errors.password)}
                 helperText={errors.password?.message}
                 value={value}
                 onChange={onChange}
                 onBlur={onBlur}
                 {...field}
-
                 rootClass="my-10"
-
+                onKeyPress={handleKeyPress}
                 rightElement={
                   <button
                     type="button"
