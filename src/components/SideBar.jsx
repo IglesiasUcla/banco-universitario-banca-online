@@ -50,13 +50,13 @@ const SideBar = () => {
               <FaHome className="mr-2" /> {isOpen && "Dashboard"}
             </LinkRouter>
           </li>
-          <li className={`mmb-2 rounded-l-md ml-2 py-4 flex items-center ${currentPage === "Mi Cuenta" ? "bg-primary-color" : ""}`}>
-            <LinkRouter to="/mi-cuenta" onClick={() => handleLinkClick("Mi Cuenta")} className={`flex lg:pl-4 items-center ${isOpen ? "justify-start" : "justify-center"} w-full`}>
+          <li className={`mb-2 rounded-l-md ml-2 py-4 flex items-center ${currentPage === "mi-cuenta" ? "bg-primary-color" : ""}`}>
+            <LinkRouter to="/mi-cuenta" onClick={() => handleLinkClick("mi-cuenta")} className={`flex lg:pl-4 items-center ${isOpen ? "justify-start" : "justify-center"} w-full`}>
               <FaUser className="mr-2" /> {isOpen && "Mi Cuenta"}
             </LinkRouter>
           </li>
-          <li className={`mb-2 rounded-l-md ml-2 py-4 flex items-center ${currentPage === "Transferencias" ? "bg-primary-color" : ""}`}>
-            <LinkRouter to="/transferencias" onClick={() => handleLinkClick("Transferencias")} className={`flex lg:pl-4 items-center ${isOpen ? "justify-start" : "justify-center"} w-full`}>
+          <li className={`mb-2 rounded-l-md ml-2 py-4 flex items-center ${currentPage === "transferencias" ? "bg-primary-color" : ""}`}>
+            <LinkRouter to="/transferencias" onClick={() => handleLinkClick("transferencias")} className={`flex lg:pl-4 items-center ${isOpen ? "justify-start" : "justify-center"} w-full`}>
               <FaExchangeAlt className="mr-2" /> {isOpen && "Transferencias"}
             </LinkRouter>
           </li>
@@ -65,8 +65,8 @@ const SideBar = () => {
               <FaAddressBook className="mr-2" /> {isOpen && "Directorio"}
             </LinkRouter>
           </li>
-          <li className={`mb-2 rounded-l-md ml-2 py-4 flex items-center ${currentPage === "Cambiar Contraseña" ? "bg-primary-color" : ""}`}>
-            <LinkRouter to="/cambiar-contraseña" onClick={() => handleLinkClick("Cambiar Contraseña")} className={`flex lg:pl-4 items-center ${isOpen ? "justify-start" : "justify-center"} w-full`}>
+          <li className={`mb-2 rounded-l-md ml-2 py-4 flex items-center ${currentPage === "cambiar-contraseña" ? "bg-primary-color" : ""}`}>
+            <LinkRouter to="/cambiar-contraseña" onClick={() => handleLinkClick("cambiar-contraseña")} className={`flex lg:pl-4 items-center ${isOpen ? "justify-start" : "justify-center"} w-full`}>
               <FaLock className="mr-2" /> {isOpen && "Cambiar Contraseña"}
             </LinkRouter>
           </li>

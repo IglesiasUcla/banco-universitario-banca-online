@@ -34,7 +34,7 @@ const TopBar = () => {
   return (
     <div className="border-b-2 border-[#eaecf0] w-full text-black h-24 px-4 flex items-center justify-between">
       <div className="flex items-center space-x-4">
-        <FaBell className="text-2xl" />
+        {/** <FaBell className="text-2xl" />*/}
         <div className="flex items-center">
           <StringAvatar 
             name={`${user.first_name} ${user.last_name}`}

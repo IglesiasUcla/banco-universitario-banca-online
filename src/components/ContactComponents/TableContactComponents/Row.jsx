@@ -13,7 +13,7 @@ import StyledButton from "../../StyledButton";
 import ContactAPI from "../../../api/ContactAPI";
 import useToast from "../../../hooks/useToast";
 
-const Row = ({ contact, index }) => {
+const Row = ({ contact, index, showActions = true }) => {
 
   const { width } = useWindowDimensions();
 
@@ -67,6 +67,7 @@ const Row = ({ contact, index }) => {
       >
         {width <= 1024 ? cutText(contact.description, 15) : contact.description}
       </span>
+      {showActions && ( // Mostrar los botones solo si showActions es true
       <div
         id={`contact-table-row-${index}-buttons`}
         className="w-[20%] h-full"
@@ -172,6 +173,7 @@ const Row = ({ contact, index }) => {
           </div>
         </Modal>
       </div>
+      )}
     </div>
   );
 };
