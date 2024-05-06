@@ -86,7 +86,7 @@ const SignUpForm = () => {
     <div className="bg-ternary-color h-screen flex justify-center items-center">
       <header>
         <div className="absolute top-0 left-0 flex items-center flex-1 my-2 mx-2">
-          <LinkRouter to="/">
+          <LinkRouter to="http://localhost:5173">
             <img src={logo} width={250} height={250} alt="Logo" />
           </LinkRouter>
         </div>
