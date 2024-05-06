@@ -5,8 +5,8 @@ export const transferSchema = object({
     .positive("La cantidad debe ser un número positivo.")
     .required("La cantidad es obligatoria."),
   accountNumber: string()
-    .min(19, "El número de cuenta debe tener mínimo 20 caracteres.")
-    .max(21, "El número de cuenta debe tener máximo 20 caracteres.")
+    .min(20, "El número de cuenta debe tener mínimo 20 caracteres.")
+    .max(20, "El número de cuenta debe tener máximo 20 caracteres.")
     .required("El número de cuenta es obligatorio."),
     description: string()
     .min(2, "El nombre debe tener mínimo 2 caracteres.")
