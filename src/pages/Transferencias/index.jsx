@@ -13,7 +13,7 @@ const TransferenciasPage = () => {
         className="w-full h-full flex flex-col items-end justify-center p-5 bg-[#eff0f4]"
       >
         <Link
-          to="/contacts/create"
+          to="/transferencias/create"
         >
           <StyledButton
             label="Hacer transferencia"

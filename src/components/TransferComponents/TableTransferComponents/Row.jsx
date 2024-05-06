@@ -1,9 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import useWindowDimensions from "../../../hooks/useWindowDimensions";
 import { cutText } from "../../../utils/formatters";
 import MovementAPI from "../../../api/MovementAPI"; 
-import useToast from "../../../hooks/useToast";
 
 const Row = ({ movement, index, showActions = true }) => { 
 
