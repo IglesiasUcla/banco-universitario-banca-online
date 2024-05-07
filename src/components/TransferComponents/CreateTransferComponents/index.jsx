@@ -155,11 +155,18 @@ const CreateTransferForm = () => {
       </form>
 
       <Modal
-        title="Última Transferencia Realizada"
+        title="¡Transferencia realizada con éxito!"
         show={showModal}
         onClose={handleCloseModal}
       >
         {lastTransfer && <LastTransferPanel lastTransfer={lastTransfer} />}
+        <div className="flex justify-end">
+        <StyledButton
+          label="Confirmar"
+          onClick={handleCloseModal}
+          className="bg-[#49BEB7] border-[#49BEB7] text-white hover:bg-[#24837c] mt-3"
+        />
+      </div>
       </Modal>
     </div>
   );
