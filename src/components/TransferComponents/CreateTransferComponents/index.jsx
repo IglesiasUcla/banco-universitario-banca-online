@@ -4,65 +4,71 @@ import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useLoading from "../../../hooks/useLoading";
 import useToast from "../../../hooks/useToast";
-import { newMovementAdapter } from "../../../adapters/Movement.Adapter"; // Importamos el adaptador
-import MovementAPI from "../../../api/MovementAPI"; // Importamos la API de Movimientos
+import { newMovementAdapter } from "../../../adapters/Movement.Adapter";
+import MovementAPI from "../../../api/MovementAPI";
 import StyledInput from "../../StyledInput";
 import StyledButton from "../../StyledButton";
 import StyledArea from "../../StyledArea";
-import { transferSchema } from "../../../schemas/transferSchema"; // Importamos el esquema de validación
+import { transferSchema } from "../../../schemas/transferSchema";
 import LastTransferPanel from "../SuccessTransferComponents";
+import Modal from "../../StyledModal";
 
 const CreateTransferForm = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { showSuccessToast, showErrorToast } = useToast();
   const navigate = useNavigate();
-  const movementAPI = new MovementAPI(); // Instanciamos la API de Movimientos
+  const movementAPI = new MovementAPI();
 
-  const [lastTransfer, setLastTransfer] = useState(null); // Estado para almacenar la última transferencia realizada
+  const [lastTransfer, setLastTransfer] = useState({
+    amount: 0,
+    accountNumber: "",
+    description: "",
+  });
+  const [showModal, setShowModal] = useState(false);
+
+  const handleOpenModal = () => setShowModal(true);
+  const handleCloseModal = () => setShowModal(false);
 
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm({
     mode: "onSubmit",
-    resolver: yupResolver(transferSchema), // Usamos el esquema de validación
-    defaultValues: { amount: "", accountNumber: "", description: "" } // Valores por defecto
+    resolver: yupResolver(transferSchema),
+    defaultValues: { amount: "", accountNumber: "", description: "" },
   });
 
-  const handleBack = () => navigate("/transferencias"); // Manejador para volver atrás
+  const handleBack = () => navigate("/transferencias");
 
   const onSubmit = async (values) => {
     startLoading();
     try {
-      // Adaptamos los valores de la transferencia antes de enviarlos a la API
       const adaptedValues = newMovementAdapter(values);
-      const { data } = await movementAPI.transfer(adaptedValues); // Llamamos a la función transfer del API de Movimientos
-      
-      // Actualizamos el estado con la información de la última transferencia realizada
+      const { data } = await movementAPI.transfer(adaptedValues);
+
       setLastTransfer(adaptedValues);
 
-      // Manejo de respuestas
       if (!data?.data || data?.errors.length > 0) {
-        const message = data?.message ?? "No es posible realizar la transferencia en este momento.";
+        const message =
+          data?.message ?? "No es posible realizar la transferencia en este momento.";
         showErrorToast(message);
         return;
       }
 
       const message = "Transferencia realizada con éxito.";
       showSuccessToast(message);
-      reset(); // Reseteamos el formulario después de una transferencia exitosa
-      {/* Mostrar el panel de última transferencia al final del formulario */}
-      console.log("Última transferencia realizada:", adaptedValues);
+      handleOpenModal();
+      reset();
     } catch (error) {
       showErrorToast(`Error al realizar la transferencia: ${error}`);
       console.error("Error al realizar la transferencia:", error);
     } finally {
       stopLoading();
     }
-  }
-  
+  };
+
   return (
     <div className="box-content rounded bg-white w-[60%] h-auto my-5 flex flex-col p-5 justify-start space-y-3">
       <div className="flex flex-row justify-between w-auto items-center pb-5">
@@ -139,12 +145,22 @@ const CreateTransferForm = () => {
             type="submit"
             label="Transferir"
             disabled={isLoading}
-            className={isLoading ? "bg-[#cccccc] border-[#cccccc] hover:text-[#4e4e4e] text-[#4e4e4e]" : "bg-[#49beb7] border-[#49beb7] text-white hover:bg-[#24837c]"}
+            className={
+              isLoading
+                ? "bg-[#cccccc] border-[#cccccc] hover:text-[#4e4e4e] text-[#4e4e4e]"
+                : "bg-[#49beb7] border-[#49beb7] text-white hover:bg-[#24837c]"
+            }
           />
         </div>
       </form>
-      {/* Mostrar el panel de última transferencia al final del formulario */}
-      {lastTransfer && <LastTransferPanel lastTransfer={lastTransfer} />}
+
+      <Modal
+        title="Última Transferencia Realizada"
+        show={showModal}
+        onClose={handleCloseModal}
+      >
+        {lastTransfer && <LastTransferPanel lastTransfer={lastTransfer} />}
+      </Modal>
     </div>
   );
 };

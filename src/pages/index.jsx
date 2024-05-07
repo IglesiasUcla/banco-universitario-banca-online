@@ -12,6 +12,7 @@ import ContactsCreatePage from "./Contacts/Create";
 import ContactsEditPage from "./Contacts/Edit";
 
 import CambiarContraseñaPage from "./CambiarContraseña";
+import LastTransferPanel from "../components/TransferComponents/SuccessTransferComponents";
 
 const router = createBrowserRouter([
     {
