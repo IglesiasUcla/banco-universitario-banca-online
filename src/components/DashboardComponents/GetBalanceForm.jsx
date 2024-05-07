@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Panel from "../Panel";
 import { getBalance } from "../../features/user/userSlice";
 
@@ -12,16 +12,14 @@ const GetBalanceForm = () => {
     dispatch(getBalance());
   }, [dispatch]);
 
-  // Verifica si el balanceData tiene información antes de intentar acceder a sus propiedades
-  const balance = balanceData && balanceData.data && balanceData.data.balance;
+  const balance = balanceData?.data?.balance;
 
   return (
-    <Panel>
-        <p style={{ fontSize: "18px", fontWeight: "bold", marginBottom: "8px" }}>Balance</p>
+    <Panel title={<p style={{ fontSize: '1.25rem' }}>Balance</p>} titleStyle={{ margin: '4px 0' }}>
       {loading ? (
-        <h1>Cargando balance...</h1>
+      <p>Cargando balance...</p>
       ) : (
-        <p style={{ fontSize: "32px", fontWeight: "bold", color: "black" }}> {balance}</p>
+      <p className="text-3xl font-bold">{balance}</p>
       )}
     </Panel>
   );

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Layout from "../../components/Layout";
 import GetBalanceForm from "../../components/DashboardComponents/GetBalanceForm";
 import GetContactsForm from "../../components/DashboardComponents/GetContactsForm";
+import GetTransfersForm from "../../components/DashboardComponents/GetTransfersForm";
 
 const HomePage = () => {
   return (
@@ -9,6 +10,7 @@ const HomePage = () => {
       <Layout>
         <GetBalanceForm/>
         <GetContactsForm/>
+        <GetTransfersForm/>
       </Layout>
     </div>
   );
