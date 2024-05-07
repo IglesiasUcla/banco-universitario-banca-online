@@ -1,5 +1,6 @@
+import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import useLoading from "../../../hooks/useLoading";
@@ -18,6 +19,8 @@ const CreateTransferForm = () => {
   const { showSuccessToast, showErrorToast } = useToast();
   const navigate = useNavigate();
   const movementAPI = new MovementAPI();
+  const location = useLocation();
+  const accountNumber = location.state?.accountNumber || "";
 
   const [lastTransfer, setLastTransfer] = useState({
     amount: 0,
@@ -37,7 +40,7 @@ const CreateTransferForm = () => {
   } = useForm({
     mode: "onSubmit",
     resolver: yupResolver(transferSchema),
-    defaultValues: { amount: "", accountNumber: "", description: "" },
+    defaultValues: { amount: "", accountNumber, description: "" },
   });
 
   const handleBack = () => navigate("/transferencias");
@@ -99,6 +102,7 @@ const CreateTransferForm = () => {
           <Controller
             name="accountNumber"
             control={control}
+            defaultValue={accountNumber}
             rules={{ required: true }}
             render={({ field: { onChange, onBlur, value, ...field } }) => (
               <StyledInput
@@ -160,13 +164,6 @@ const CreateTransferForm = () => {
         onClose={handleCloseModal}
       >
         {lastTransfer && <LastTransferPanel lastTransfer={lastTransfer} />}
-        <div className="flex justify-end">
-        <StyledButton
-          label="Confirmar"
-          onClick={handleCloseModal}
-          className="bg-[#49BEB7] border-[#49BEB7] text-white hover:bg-[#24837c] mt-3"
-        />
-      </div>
       </Modal>
     </div>
   );
