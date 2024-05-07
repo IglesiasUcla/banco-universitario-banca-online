@@ -10,12 +10,15 @@ import StyledInput from "../../StyledInput";
 import StyledButton from "../../StyledButton";
 import StyledArea from "../../StyledArea";
 import { transferSchema } from "../../../schemas/transferSchema"; // Importamos el esquema de validación
+import LastTransferPanel from "../SuccessTransferComponents";
 
 const CreateTransferForm = () => {
   const { isLoading, startLoading, stopLoading } = useLoading();
   const { showSuccessToast, showErrorToast } = useToast();
   const navigate = useNavigate();
   const movementAPI = new MovementAPI(); // Instanciamos la API de Movimientos
+
+  const [lastTransfer, setLastTransfer] = useState(null); // Estado para almacenar la última transferencia realizada
 
   const {
     control,
@@ -36,6 +39,9 @@ const CreateTransferForm = () => {
       // Adaptamos los valores de la transferencia antes de enviarlos a la API
       const adaptedValues = newMovementAdapter(values);
       const { data } = await movementAPI.transfer(adaptedValues); // Llamamos a la función transfer del API de Movimientos
+      
+      // Actualizamos el estado con la información de la última transferencia realizada
+      setLastTransfer(adaptedValues);
 
       // Manejo de respuestas
       if (!data?.data || data?.errors.length > 0) {
@@ -47,7 +53,8 @@ const CreateTransferForm = () => {
       const message = "Transferencia realizada con éxito.";
       showSuccessToast(message);
       reset(); // Reseteamos el formulario después de una transferencia exitosa
-      handleBack(); // Volvemos atrás
+      {/* Mostrar el panel de última transferencia al final del formulario */}
+      console.log("Última transferencia realizada:", adaptedValues);
     } catch (error) {
       showErrorToast(`Error al realizar la transferencia: ${error}`);
       console.error("Error al realizar la transferencia:", error);
@@ -55,7 +62,7 @@ const CreateTransferForm = () => {
       stopLoading();
     }
   }
-
+  
   return (
     <div className="box-content rounded bg-white w-[60%] h-auto my-5 flex flex-col p-5 justify-start space-y-3">
       <div className="flex flex-row justify-between w-auto items-center pb-5">
@@ -136,6 +143,8 @@ const CreateTransferForm = () => {
           />
         </div>
       </form>
+      {/* Mostrar el panel de última transferencia al final del formulario */}
+      {lastTransfer && <LastTransferPanel lastTransfer={lastTransfer} />}
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import HomePage from "./Home";
 import TransferenciasPage from "./Transferencias";
 import TransferCreatePage from "./Transferencias/Create";
+import TransferSuccessPage from "./Transferencias/Success";
 import LoginPage from "./LogIn";
 import SignUpPage from "./SignUp";
 import MiCuentaPage from "./MiCuenta";
@@ -32,6 +33,10 @@ const router = createBrowserRouter([
     {
       path: "/transferencias/create",
       element: <TransferCreatePage />,
+    },
+    {
+      path: "/transferencias/success",
+      element: <TransferSuccessPage />,
     },
     {
       path: "/mi-cuenta",
